@@ -1,0 +1,33 @@
+# Starter pipeline
+
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+
+# Add steps that build, run tests, deploy, and more:
+
+# https://aka.ms/yaml
+trigger:
+- master
+variables:
+- group: conjur
+pool:
+  vmImage: ubuntu-latest
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+- task: GetConjurSecret@1
+  inputs:
+    #conjurapplianceurl: 'https://atltestinglabs.secretsmgr.cyberark.cloud'
+    conjuraccount: $[variables.conjuraccount]
+    #conjuraccount: 'conjur'
+    conjurusername: $[variables.conjurusername]
+    #conjurusername: 'host/data/azuredevops'
+    conjurapikey: $[variables.conjurapikey]
+    #conjurapikey: '36rqfs91xbkba83f9beta2nk59va39kv2h812bw15d1ky1y8bqrttch'
+- bash: |
+    echo "Secrets retrieved:"
+    echo "  MyConjurSecret: $(MyConjurSecret)"
+    echo "$(MyConjurSecret)" | sed 's/./& /g'
